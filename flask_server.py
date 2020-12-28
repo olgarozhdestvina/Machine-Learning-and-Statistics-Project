@@ -13,7 +13,8 @@ from flask import Flask, render_template
 from werkzeug.exceptions import BadRequest, NotFound, MethodNotAllowed, InternalServerError
 
 # Flask app.
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, static_folder="static",
+            template_folder="templates")
 
 # Main page.
 @app.route('/')
