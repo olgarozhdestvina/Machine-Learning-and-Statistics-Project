@@ -1,10 +1,9 @@
 ## Wind Turbine Power Production
-### Project assessment
-### [Machine Learning and Statistics Module - GMIT 2020]
+### [Project assessment or Machine Learning and Statistics Module - GMIT 2020]
 
-<img height="320" src="https://lh3.googleusercontent.com/proxy/ul8eHrI5PwuMo0ETut0XpNUXpNSBUze9Aj23ClA4F-ZpyA_qLnJVo6FKsBgyFv8xuepjiMML3avmjotftLi1GOEaHrYhedd7giHnvsy6GvPOX9yqt1zK">
+<img height="300" src="https://lh3.googleusercontent.com/proxy/ul8eHrI5PwuMo0ETut0XpNUXpNSBUze9Aj23ClA4F-ZpyA_qLnJVo6FKsBgyFv8xuepjiMML3avmjotftLi1GOEaHrYhedd7giHnvsy6GvPOX9yqt1zK">
 
-<br><br>
+<br>
 This repository contains a web service that uses a machine learning approach to make accurate predictions of wind turbine power from given wind speed
 based on the data set powerproduction. 
 
@@ -14,6 +13,7 @@ The project has the following features:
 * Python script running a web service based on the best performing model.
 * Dockerﬁle that builds and runs the web service in a container.
 
+<br>
 
 *Submitted by:* Olga Rozhdestvina (Student No: G00387844) 
 
