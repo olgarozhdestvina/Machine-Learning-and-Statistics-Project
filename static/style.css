@@ -27,6 +27,7 @@ header {
 /* Form*/
 .wrapper {
     display: flex;
+    text-align: center;
 }
 
 /* Add colour and opacity to the background colour only.

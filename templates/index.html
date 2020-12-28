@@ -22,15 +22,15 @@
         <p>WIND TURBINE POWER PRODUCTION</p>
     </header>
     <div class="wrapper">
-        <form class="col-sm-3">
+        <form class="col-sm-4" id="form">
             <div>
                 <label for="speed">Enter Wind Speed</label>
-                <input type="number" name="speed" class="form-control mb-2 mr-sm-2" id="speed" placeholder="10" required />
+                <input type="number" name="speed" class="form-control mb-2 mr-sm-2" id="speed" placeholder="For example, 10" required />
             </div>
-            <button type="submit">Calculate Turbine Power</button><br/><br/>
+            <button type="button" onclick="calculate();">Calculate Turbine Power</button><br/><br/>
             <div>
                 <label for="power">Wind Turbine Power</label>
-                <input type="number" name="power" class="form-control mb-2 mr-sm-2" id="power"/>
+                <input type="number" class="form-control mb-2 mr-sm-2" id="power" readonly/>
             </div>            
         </form>
     </div>
