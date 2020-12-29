@@ -14,7 +14,7 @@ function power(speed) {
         "data": {"speed": speed},
         "success": function (result) {
             console.log(result);
-            //addDentistToTable(result)
+            document.getElementById('power').value = result;
         },
         "error": function (xhr, status, error) {
             alert(error);

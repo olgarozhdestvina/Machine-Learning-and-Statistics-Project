@@ -8,14 +8,16 @@ Lecturer: Ian McLoughlin
 """
 # Numerical arrays.
 import numpy as np
+from numpy.lib import polynomial
 # Data frames.
 import pandas as pd
 # Flask.
-from flask import Flask, render_template, abort, request, jsonify
+from flask import Flask, render_template, request
 from werkzeug.exceptions import BadRequest, NotFound, MethodNotAllowed, InternalServerError
 # Model.
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import make_pipeline
+from sklearn.kernel_ridge import KernelRidge
 # Preprocessing.
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -44,9 +46,13 @@ def model():
         pipeline.fit(speed_train, power_train)
         # Power prediction and output as a trimmed string.
         power_output = pipeline.predict(input_speed)
-        return str(scaler.inverse_transform(power_output))[2:-2]
+        # To avoid negative output 
+        if power_output < 0:
+            return str(0)
+        else:
+            return str(scaler.inverse_transform(power_output))[2:-2]
     except:
-        print("Failed to preprocess data")
+        print("Failed to predict the power output")
 
 # Loading the data set and separating for variables.
 def load_dataset():
@@ -81,7 +87,7 @@ def preprocess():
         speed_train, speed_test, power_train, power_test = train_test_split(X, y, test_size=0.3, random_state=1)
         return speed_train, power_train, input_speed, scaler
     except:
-        print("The speed could not be retrieved")
+        print("Failed to preprocess data")
 
 
 # Error handlers.
