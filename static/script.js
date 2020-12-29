@@ -7,7 +7,7 @@ function calculate() {
 
 host = window.location.origin
 function power(speed) {
-    console.log(typeof(speed));
+    console.log(speed);
     $.ajax({
         "url": host+"/calculate/",
         "method": "POST",
