@@ -8,21 +8,17 @@ Lecturer: Ian McLoughlin
 """
 # Numerical arrays.
 import numpy as np
-from numpy.lib import polynomial
 # Data frames.
 import pandas as pd
 # Flask.
 from flask import Flask, render_template, request
 from werkzeug.exceptions import BadRequest, NotFound, MethodNotAllowed, InternalServerError
 # Model.
-from sklearn.linear_model import LinearRegression
-from sklearn.pipeline import make_pipeline
-from sklearn.kernel_ridge import KernelRidge
+import tensorflow.keras as kr
 # Preprocessing.
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import PolynomialFeatures
-
 
 # Flask app.
 app = Flask(__name__, static_folder="static",
@@ -33,40 +29,48 @@ app = Flask(__name__, static_folder="static",
 def home():
     return render_template("index.html")
 
+
 """
 Creating a Linear Regression with Polynomial Features model 
 and predicting power from the input speed.
 """
 @app.route('/calculate/', methods=["POST"])
-def model():
+def power():
     try:
         speed_train, power_train, input_speed, scaler = preprocess()
         # Create a model.
-        pipeline = make_pipeline(PolynomialFeatures(22), LinearRegression())
-        pipeline.fit(speed_train, power_train)
+        model = kr.models.Sequential()
+        model.add(kr.layers.Dense(55, input_shape=(33,), activation='relu',  kernel_initializer=kr.initializers.RandomUniform(seed=1)))
+        model.add(kr.layers.Dense(25, input_shape=(33,), activation='relu', kernel_initializer=kr.initializers.he_uniform(seed=1)))
+        model.add(kr.layers.Dense(1, activation='softplus',
+                                  kernel_initializer=kr.initializers.RandomUniform(seed=1)))
+        # Compile the model.
+        model.compile(optimizer=kr.optimizers.Adam(0.01), loss='mse')
+        # Fit the model to the training data (hide the output).
+        model.fit(speed_train, power_train, epochs=150, batch_size=len(speed_train))
         # Power prediction and output as a trimmed string.
-        power_output = pipeline.predict(input_speed)
-        # To avoid negative output 
-        if power_output < 0:
-            return str(0)
-        else:
-            return str(scaler.inverse_transform(power_output))[2:-2]
+        power_output = model.predict(input_speed)
+        power_output = scaler.inverse_transform(power_output.reshape(-1, 1))
+        return str(np.round(power_output, 3))[2:-2]
     except:
         print("Failed to predict the power output")
+
 
 # Loading the data set and separating for variables.
 def load_dataset():
     try:
         df = pd.read_csv("powerproduction.csv")
-        df_new = df.drop(df[(df.power == 0) & (df.speed > 5)].index)
+        df_new = df.drop(df[(df.power == 0) & (
+            df.speed > 5) & (df.speed < 24)].index)
         speed = df_new.iloc[:, 0].values
         power = df_new.iloc[:, 1].values
         # Convert into 2D numpy arrays
-        X = np.array(speed).reshape(-1,1)
-        y = np.array(power).reshape(-1,1) 
+        X = np.array(speed).reshape(-1, 1)
+        y = np.array(power).reshape(-1, 1)
         return X, y
     except FileNotFoundError:
         print("The data set doesn't exist in the same directory")
+
 
 """
 Data preprocessing of data set variables 
@@ -77,14 +81,20 @@ def preprocess():
         X, y = load_dataset()
         # Get speed input from the form, convert into 2D array.
         s = request.form['speed']
-        s = np.array(s).reshape(-1,1) 
+        s = np.array(s).reshape(-1, 1)
         # Scaling
         scaler = MinMaxScaler()
         X = scaler.fit_transform(X)
         input_speed = scaler.transform(s)
         y = scaler.fit_transform(y)
         # Split the data on training and test
-        speed_train, speed_test, power_train, power_test = train_test_split(X, y, test_size=0.3, random_state=1)
+        speed_train, speed_test, power_train, power_test = train_test_split(
+            X, y, test_size=0.3, random_state=1)
+        # Apply plynominal Features
+        poly = PolynomialFeatures(32)
+        speed_train = poly.fit_transform(speed_train)
+        speed_test = poly.fit_transform(speed_test)
+        input_speed = poly.transform(input_speed)
         return speed_train, power_train, input_speed, scaler
     except:
         print("Failed to preprocess data")
@@ -109,6 +119,7 @@ def handle_bad_request(e):
 @app.errorhandler(InternalServerError)
 def handle_bad_request(e):
     return 'Internal server error!', e
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -26,7 +26,7 @@ The project has the following features:
 ### Set up
 ___
 
-Applications used for completion of the project are [The Jupyter Notebook](https://jupyter.org/) and [cmder](http://cmder.net/)
+Applications used for completion of the project are [The Jupyter Notebook](https://jupyter.org/), [Visual Studio Code](https://code.visualstudio.com/), [cmder](http://cmder.net/)
 
 Distribution of the Python used is [Anaconda Python distribution](https://www.anaconda.com/). 
 
@@ -38,8 +38,29 @@ ___
 1. Make sure that you have Python installed
 2. Download or clone current repository "Machine-Learning-and-Statistics-Project"
 3. Open Command Interpreter and get into correct directory
-4. Run Jupyter notebook
-5. On the home page of opened Jupyter server select Project.ipynb
+4. Install packages and run the app: 
+    * If using a virtual environment: 
+
+        ```bash
+        pip install -r requirements.txt
+        export FLASK_APP=flask_server
+        python3 -m flask run
+        ```
+
+        # Windows
+        ```bash
+        pip install -r requirements.txt
+        set FLASK_APP=flask_server
+        python -m flask run
+        ```
+    * If using Docker:
+
+        ```bash
+        docker build . -t wind-power
+        docker run -d -p 5000:5000 wind-power
+        ```
+        In case of an error, change the first line of the Docker file for your version of Python.
+5. To view the model analysis run Jupyter Notebook and open Power_production_models.ipynb. 
 
 <br>
 
