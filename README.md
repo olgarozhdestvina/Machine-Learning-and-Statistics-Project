@@ -4,12 +4,12 @@
 <img height="300" src="https://images.vexels.com/media/users/3/169388/isolated/preview/8ae55200ad8cdc41bac73f0334acbafe-wind-turbine-generator-wind-farm-three-flat-by-vexels.png">
 
 <br>
-This repository contains a web service that uses a machine learning approach to make accurate predictions of wind turbine power from given wind speed
-based on the data set powerproduction. 
+
+This repository contains a web service that uses a machine learning approach to make accurate predictions of wind turbine power from given wind speed based on the data set _powerproduction_. 
 
 The project has the following features:
 
-* Jupyter notebook with three machine learning models trained on the data set _powerproduction_.
+* Jupyter notebook with three models trained on the data set _powerproduction_.
 * Python script running a web service based on the best performing model.
 * Dockerﬁle that builds and runs the web service in a container.
 
@@ -41,13 +41,14 @@ ___
 4. Install packages and run the app: 
     * If using a virtual environment: 
 
+        **Linux**
         ```bash
         pip install -r requirements.txt
         export FLASK_APP=flask_server
         python3 -m flask run
         ```
 
-        # Windows
+        **Windows**
         ```bash
         pip install -r requirements.txt
         set FLASK_APP=flask_server
