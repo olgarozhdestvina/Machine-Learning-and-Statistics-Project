@@ -31,7 +31,7 @@ def home():
 
 
 """
-Creating a Linear Regression with Polynomial Features model 
+Creating a Neural Network model 
 and predicting power from the input speed.
 """
 @app.route('/calculate/', methods=["POST"])
@@ -40,15 +40,18 @@ def power():
         speed_train, power_train, input_speed, scaler = preprocess()
         # Create a model.
         model = kr.models.Sequential()
-        model.add(kr.layers.Dense(55, input_shape=(33,), activation='relu',  kernel_initializer=kr.initializers.RandomUniform(seed=1)))
-        model.add(kr.layers.Dense(25, input_shape=(33,), activation='relu', kernel_initializer=kr.initializers.he_uniform(seed=1)))
+        model.add(kr.layers.Dense(55, input_shape=(53,), activation='relu',
+                                  kernel_initializer=kr.initializers.RandomUniform(seed=1)))
+        model.add(kr.layers.Dense(25, activation='relu',
+                                  kernel_initializer=kr.initializers.he_uniform(seed=1)))
         model.add(kr.layers.Dense(1, activation='softplus',
                                   kernel_initializer=kr.initializers.RandomUniform(seed=1)))
         # Compile the model.
         model.compile(optimizer=kr.optimizers.Adam(0.01), loss='mse')
         # Fit the model to the training data (hide the output).
-        model.fit(speed_train, power_train, epochs=150, batch_size=len(speed_train))
-        # Power prediction and output as a trimmed string.
+        model.fit(speed_train, power_train, verbose=False,
+                  epochs=130, batch_size=len(speed_train))
+        # Power prediction, round the output to three decimal places and return as a trimmed string.
         power_output = model.predict(input_speed)
         power_output = scaler.inverse_transform(power_output.reshape(-1, 1))
         return str(np.round(power_output, 3))[2:-2]
@@ -73,9 +76,11 @@ def load_dataset():
 
 
 """
-Data preprocessing of data set variables 
-and input speed from Web service
+Data preprocessing of the data set variables 
+and input speed from the Web service
 """
+
+
 def preprocess():
     try:
         X, y = load_dataset()
@@ -91,7 +96,7 @@ def preprocess():
         speed_train, speed_test, power_train, power_test = train_test_split(
             X, y, test_size=0.3, random_state=1)
         # Apply plynominal Features
-        poly = PolynomialFeatures(32)
+        poly = PolynomialFeatures(52)
         speed_train = poly.fit_transform(speed_train)
         speed_test = poly.fit_transform(speed_test)
         input_speed = poly.transform(input_speed)

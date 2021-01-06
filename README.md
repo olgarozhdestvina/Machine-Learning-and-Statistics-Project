@@ -1,7 +1,7 @@
 ## Wind Turbine Power Production
 ### [Project assessment or Machine Learning and Statistics Module - GMIT 2020]
 
-<img height="300" src="https://lh3.googleusercontent.com/proxy/ul8eHrI5PwuMo0ETut0XpNUXpNSBUze9Aj23ClA4F-ZpyA_qLnJVo6FKsBgyFv8xuepjiMML3avmjotftLi1GOEaHrYhedd7giHnvsy6GvPOX9yqt1zK">
+<img height="300" src="https://images.vexels.com/media/users/3/169388/isolated/preview/8ae55200ad8cdc41bac73f0334acbafe-wind-turbine-generator-wind-farm-three-flat-by-vexels.png">
 
 <br>
 This repository contains a web service that uses a machine learning approach to make accurate predictions of wind turbine power from given wind speed
